@@ -10,12 +10,12 @@
  * the necessary resources.
  */
 ---
-<div class="grid-layout">
+<div data-launchpad-layout>
 	<slot />
 </div>
 
 <style>
-	.grid-layout {
+	[data-launchpad-layout] {
 		display: grid;
 		grid-auto-rows: auto;
 		grid-auto-flow: row;
@@ -24,12 +24,12 @@
 		width: 100%;
 	}
 	@media (min-width: 768px) {
-		.grid-layout {
+		[data-launchpad-layout] {
 			grid-template-columns: repeat(16, 1fr);
 		}
 	}
 	@media (min-width: 1024px) {
-		.grid-layout {
+		[data-launchpad-layout] {
 			grid-template-columns: repeat(24, 1fr);
 		}
 	}

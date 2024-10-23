@@ -1,5 +1,4 @@
 ---
-import MinimalLayout from './MinimalLayout.astro';
 interface Props {
 	title: string;
 }
@@ -19,9 +18,7 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<main>
-			<MinimalLayout>
-        <slot />
-      </MinimalLayout>
+      <slot />
 		</main>
 	</body>
 </html>

@@ -121,6 +121,5 @@ function getIsPreview(previewCallback?: () => boolean) {
 
   const { PREVIEW } = loadEnv(process.env.NODE_ENV || "", process.cwd(), "");
 
-  console.log({ PREVIEW });
   return PREVIEW === "true";
 }

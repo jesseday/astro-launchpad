@@ -1,9 +1,10 @@
 ---
 import { getEntry } from 'astro:content';
-import Layout from './Layout.astro';
+import Layout from 'virtual:launchpad-layout';
 import Menu from './Menu.astro';
 import { importStory } from '../lib/importStory';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import MinimalLayout from './MinimalLayout.astro';
 
 const entry = await getEntry('components', (Astro.params.component || '').toLowerCase());
 
@@ -13,13 +14,15 @@ if (entry) {
 }
 ---
 <Layout title={entry?.data?.name || 'Component not found'}>
-  <Menu entry={entry} />
-  <article>
-    {AstroComponent && <AstroComponent />}
-    {!AstroComponent && (
-      <h1 class="no-content">Component not found</h1>
-    )}
-  </article>
+  <MinimalLayout>
+    <Menu entry={entry} />
+    <article>
+      {AstroComponent && <AstroComponent />}
+      {!AstroComponent && (
+        <h1 class="no-content">Component not found</h1>
+      )}
+    </article>
+  </MinimalLayout>
 </Layout>
 
 <style>
