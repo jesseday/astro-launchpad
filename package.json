@@ -8,7 +8,9 @@
     "astro-integration"
   ],
   "exports": {
-    ".": "./lib/index.ts"
+    ".": "./src/plugin/index.ts",
+    "./plugin": "./src/plugin/index.ts",
+    "./ui/*": "./src/ui/*.astro"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
