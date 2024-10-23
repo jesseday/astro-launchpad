@@ -60,9 +60,9 @@ export function generateIsolationRoutes(options: LaunchpadPluginOptions) {
     options?.pathPrefix || "isolation"
   }/[...component]`.replaceAll(/\/+/g, "/");
   const routeEntryPoint =
-    options?.routeEntryPoint || path.join(__dirname, "../templates/Page.astro");
+    options?.routeEntryPoint || path.join(__dirname, "../ui/Page.astro");
   const layoutFile =
-    options?.layoutFile || path.join(__dirname, "../templates/Layout.astro");
+    options?.layoutFile || path.join(__dirname, "../ui/Layout.astro");
 
   return {
     name: "generate-isolation-routes",
