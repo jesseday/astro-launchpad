@@ -51,7 +51,9 @@ interface LaunchpadPluginOptions {
   pathPrefix?: string;
   routeEntryPoint?: string;
   prerender?: boolean;
+  layoutFile?: string;
 }
+
 export function generateIsolationRoutes(options: LaunchpadPluginOptions) {
   const isPreview = getIsPreview(options?.previewCallback);
   const routePattern = `/${
@@ -59,19 +61,23 @@ export function generateIsolationRoutes(options: LaunchpadPluginOptions) {
   }/[...component]`.replaceAll(/\/+/g, "/");
   const routeEntryPoint =
     options?.routeEntryPoint || path.join(__dirname, "../templates/Page.astro");
-
-  console.log({ routePattern });
-  console.log({ routeEntryPoint });
+  const layoutFile =
+    options?.layoutFile || path.join(__dirname, "../templates/Layout.astro");
 
   return {
     name: "generate-isolation-routes",
     hooks: {
       "astro:config:setup": ({
         injectRoute,
+        updateConfig,
       }: HookParameters<"astro:config:setup">) => {
         if (!isPreview) {
           return;
         }
+
+        updateConfig({
+          vite: { plugins: [createVirtualModule(layoutFile)] },
+        });
 
         injectRoute({
           pattern: routePattern,
@@ -79,6 +85,31 @@ export function generateIsolationRoutes(options: LaunchpadPluginOptions) {
           prerender: options?.prerender || false,
         });
       },
+    },
+  };
+}
+
+/**
+ * Injects a virtual module that exports the layout file.
+ *
+ * This gives users the flexibility to bring their own layout
+ * file with styles and everything.
+ */
+function createVirtualModule(layoutFile: string) {
+  const virtualModuleId = "virtual:launchpad-layout";
+  const resolvedVirtualModuleId = "\0" + virtualModuleId;
+
+  return {
+    name: "launchpad-layout",
+    resolveId(id: string) {
+      if (id === virtualModuleId) {
+        return resolvedVirtualModuleId;
+      }
+    },
+    load(id: string) {
+      if (id === resolvedVirtualModuleId) {
+        return `import Layout from "${layoutFile}"; export default Layout;`;
+      }
     },
   };
 }
