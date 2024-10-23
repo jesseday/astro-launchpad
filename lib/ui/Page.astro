@@ -1,16 +1,16 @@
 ---
 import { getEntry } from 'astro:content';
+// @ts-ignore
 import Layout from 'virtual:launchpad-layout';
 import Menu from './Menu.astro';
-import { importStory } from '../lib/importStory';
-import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import { importStory } from '../importStory';
 import MinimalLayout from './MinimalLayout.astro';
 
 const entry = await getEntry('components', (Astro.params.component || '').toLowerCase());
 
-let AstroComponent: AstroComponentFactory | undefined;
+let AstroComponent;
 if (entry) {
-  AstroComponent = await importStory(entry.data.path) as AstroComponentFactory;
+  AstroComponent = await importStory(entry.data.path);
 }
 ---
 <Layout title={entry?.data?.name || 'Component not found'}>
