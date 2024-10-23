@@ -1,3 +1,5 @@
+import { AstroComponentFactory } from "astro/runtime/server/index.js";
+
 /**
  * @file Import stories in a vite-friendly way.
  * @description Imports stories in a way that vite can
@@ -24,6 +26,6 @@ const modules = await import.meta.glob(["/src/**/*.story.astro"], {
  * @returns {AstroComponentFactory} An astro component to
  *   be rendered by the AstroContainer.
  */
-export function importStory(path: string) {
-  return modules[path]();
+export function importStory(path: string): AstroComponentFactory {
+  return modules[path]() as unknown as AstroComponentFactory;
 }

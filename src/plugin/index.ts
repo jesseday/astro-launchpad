@@ -1,7 +1,7 @@
 import { loadEnv } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
-import type { HookParameters } from "astro";
+import type { AstroIntegration, HookParameters } from "astro";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,7 +54,9 @@ interface LaunchpadPluginOptions {
   layoutFile?: string;
 }
 
-export function generateIsolationRoutes(options: LaunchpadPluginOptions) {
+export function generateIsolationRoutes(
+  options: LaunchpadPluginOptions
+): AstroIntegration {
   const isPreview = getIsPreview(options?.previewCallback);
   const routePattern = `/${
     options?.pathPrefix || "isolation"
