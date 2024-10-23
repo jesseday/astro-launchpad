@@ -1,0 +1,24 @@
+{
+  "name": "astro-launchpad",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    "astro",
+    "withastro",
+    "astro-integration"
+  ],
+  "exports": {
+    ".": "./lib/index.ts"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jesse Day (https://github.com/jesseday)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.6.1",
+    "astro": "^4.15.9",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.7"
+  }
+}

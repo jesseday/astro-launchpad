@@ -1,0 +1,51 @@
+---
+import { getEntry } from 'astro:content';
+import Layout from './Layout.astro';
+import Menu from './Menu.astro';
+import { importStory } from '../lib/importStory';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+
+const entry = await getEntry('components', (Astro.params.component || '').toLowerCase());
+
+let AstroComponent: AstroComponentFactory | undefined;
+if (entry) {
+  AstroComponent = await importStory(entry.data.path) as AstroComponentFactory;
+}
+---
+<Layout title={entry?.data?.name || 'Component not found'}>
+  <Menu entry={entry} />
+  <article>
+    {AstroComponent && <AstroComponent />}
+    {!AstroComponent && (
+      <h1 class="no-content">Component not found</h1>
+    )}
+  </article>
+</Layout>
+
+<style>
+  article {
+    display: contents;
+    grid-column: 1 / -1;
+  }
+
+  :global(menu) + article {
+    display: block;
+  }
+
+  .no-content {
+    margin: 0;
+    padding: clamp(1rem, 5vw, 2rem);
+  }
+
+  @media screen and (min-width: 768px) {
+    article {
+      grid-column: span 12;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    article {
+      grid-column: span 20;
+    }
+  }
+</style>

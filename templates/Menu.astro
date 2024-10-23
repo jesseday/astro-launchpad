@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+
+const url = new URL(Astro.request.url);
+
+const menu = (await getCollection('components'))
+  .map(entry => entry.data.id.split('/'))
+  .toSorted((a, b) => a.join().localeCompare(b.join()))
+  .reduce((acc, name) => {
+    if (!acc[name[0]]) {
+      acc[name[0]] = [];
+    }
+    acc[name[0]].push(name);
+    return acc;
+  }, {});
+---
+{url.searchParams.get('hideMenu') !== 'true' && (
+    <menu>
+      <li><a href="?hideMenu=true">Hide menu</a></li>
+      {Object.keys(menu).map((category) => (
+        <li>
+          <strong>{category}</strong>
+          <ul>
+            {menu[category].map((component: string[]) => (
+              <li>
+                <a href={`/isolation/${component.join('/')}`}>{component.slice(1).join('/')}</a>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </menu>
+  )}
+
+<style>
+  menu {
+    background-color: aliceblue;
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 1rem;
+    word-wrap: break-word;
+
+    ul,
+    li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li > ul {
+      margin-top: 1rem;
+    }
+
+   > li + li {
+      margin-top: 2rem;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    menu {
+      grid-column: span 4;
+      height: 100vh;
+      overflow-y: scroll;
+      position: sticky;
+      top: 0;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    menu {
+      grid-column: span 4;
+    }
+  }
+</style>
