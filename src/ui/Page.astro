@@ -1,0 +1,16 @@
+---
+import { getEntry } from 'astro:content';
+// @ts-ignore
+import Layout from 'virtual:launchpad-layout';
+import MinimalLayout from './MinimalLayout.astro';
+import Menu from './Menu.astro';
+import Content from './Content.astro';
+
+const entry = await getEntry('components', (Astro.params.component || '').toLowerCase());
+---
+<Layout title={entry?.data?.name || 'Component not found'}>
+  <MinimalLayout>
+    <Menu entry={entry} />
+    <Content entry={entry} />
+  </MinimalLayout>
+</Layout>

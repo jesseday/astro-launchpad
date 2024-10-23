@@ -1,0 +1,59 @@
+---
+import { undefined } from 'astro:schema';
+import { importStory } from '../plugin/importStory';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+
+interface Props {
+  entry?: {
+    data: {
+      path: string;
+    }
+  }
+}
+
+const { entry } = Astro.props;
+
+let AstroComponent: AstroComponentFactory | undefined;
+if (entry) {
+  try {
+    AstroComponent = await importStory(entry.data.path) as AstroComponentFactory;
+  } catch (error) {
+    console.error(`Component story not found at path: ${entry?.data?.path || undefined}`);
+  }
+}
+---
+
+<article>
+  {AstroComponent && <AstroComponent />}
+  {!AstroComponent && (
+    <h1 class="no-content">Component not found</h1>
+  )}
+</article>
+
+<style>
+  article {
+    display: contents;
+    grid-column: 1 / -1;
+  }
+
+  :global(menu) + article {
+    display: block;
+  }
+
+  .no-content {
+    margin: 0;
+    padding: clamp(1rem, 5vw, 2rem);
+  }
+
+  @media screen and (min-width: 768px) {
+    article {
+      grid-column: span 12;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    article {
+      grid-column: span 20;
+    }
+  }
+</style>
