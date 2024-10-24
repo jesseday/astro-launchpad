@@ -64,6 +64,7 @@ export default function launchpadPlugin(
   const routePattern = `/${routePrefix}/[...component]`;
   const routeEntryPoint =
     options?.routeEntryPoint || path.join(__dirname, "../ui/Page.astro");
+  const iframedEntryPoint = path.join(__dirname, "../ui/IframedPage.astro");
   const layoutFile =
     options?.layoutFile || path.join(__dirname, "../ui/Layout.astro");
 
@@ -85,6 +86,12 @@ export default function launchpadPlugin(
         injectRoute({
           pattern: routePattern,
           entrypoint: routeEntryPoint,
+          prerender: options?.prerender,
+        });
+
+        injectRoute({
+          pattern: `/${routePrefix}/isolate/[...component]`,
+          entrypoint: iframedEntryPoint,
           prerender: options?.prerender,
         });
       },

@@ -1,16 +1,79 @@
 ---
 import { getEntry } from 'astro:content';
 // @ts-ignore
-import Layout from 'virtual:launchpad-settings';
+import Layout, { routePrefix } from 'virtual:launchpad-settings';
 import MinimalLayout from './MinimalLayout.astro';
 import Menu from './Menu.astro';
-import Content from './Content.astro';
 
 const entry = await getEntry('components', (Astro.params.component || '').toLowerCase());
 ---
 <Layout title={entry?.data?.name || 'Component not found'}>
   <MinimalLayout>
     <Menu entry={entry} />
-    <Content entry={entry} />
+    <div class="preview-frame">
+      <div class="preview-frame-context">
+        <button class="desktop">Desktop</button>
+        <button class="tablet">Tablet</button>
+        <button class="mobile">Mobile</button>
+        <button class="maximize">Maximize</button>
+      </div>
+      <iframe src={`/${routePrefix}/isolate/${Astro.params.component}`} />
+    </div>
   </MinimalLayout>
 </Layout>
+
+
+<style>
+  :global(body) {
+    /* Scroll in the iframe only */
+    overflow: hidden;
+  }
+  iframe {
+    border: none;
+    display: block;
+    height: var(--iframe-height, 100vh);
+    width: var(--iframe-width, 100%);
+  }
+
+  .preview-frame {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .preview-frame-context {
+    background-color: #fafafa;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .preview-frame-context button {
+    background: none;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    padding: 1rem;
+    text-decoration: underline;
+  }
+
+  .preview-frame-context button:hover {
+    color: #0070f3;
+  }
+
+  .preview-frame-context button:last-child {
+    margin-left: auto;
+  }
+
+  @media screen and (min-width: 768px) {
+    .preview-frame {
+      grid-column: span 12;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .preview-frame {
+      grid-column: span 20;
+    }
+  }
+</style>

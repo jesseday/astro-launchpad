@@ -36,24 +36,8 @@ if (entry) {
     grid-column: 1 / -1;
   }
 
-  :global(menu) + article {
-    display: block;
-  }
-
   .no-content {
     margin: 0;
     padding: clamp(1rem, 5vw, 2rem);
-  }
-
-  @media screen and (min-width: 768px) {
-    article {
-      grid-column: span 12;
-    }
-  }
-
-  @media screen and (min-width: 1024px) {
-    article {
-      grid-column: span 20;
-    }
   }
 </style>

@@ -1,0 +1,11 @@
+---
+import { getEntry } from 'astro:content';
+// @ts-ignore
+import Layout from 'virtual:launchpad-settings';
+import Content from './Content.astro';
+
+const entry = await getEntry('components', (Astro.params.component || '').toLowerCase());
+---
+<Layout title={entry?.data?.name || 'Component not found'}>
+  <Content entry={entry} />
+</Layout>
