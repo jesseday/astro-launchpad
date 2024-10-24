@@ -48,7 +48,7 @@ export function storyLoader() {
  */
 interface LaunchpadPluginOptions {
   previewCallback?: () => boolean;
-  pathPrefix?: string;
+  routePrefix?: string;
   routeEntryPoint?: string;
   prerender?: boolean;
   layoutFile?: string;
@@ -58,9 +58,10 @@ export function generateIsolationRoutes(
   options: LaunchpadPluginOptions
 ): AstroIntegration {
   const isPreview = getIsPreview(options?.previewCallback);
-  const routePattern = `/${
-    options?.pathPrefix || "isolation"
-  }/[...component]`.replaceAll(/\/+/g, "/");
+  const routePrefix = (options?.routePrefix || "isolation")
+    .replace(/^\/+/, "")
+    .replace(/\/+$/, "");
+  const routePattern = `/${routePrefix}/[...component]`;
   const routeEntryPoint =
     options?.routeEntryPoint || path.join(__dirname, "../ui/Page.astro");
   const layoutFile =
@@ -78,13 +79,13 @@ export function generateIsolationRoutes(
         }
 
         updateConfig({
-          vite: { plugins: [createVirtualModule(layoutFile)] },
+          vite: { plugins: [createVirtualModule(layoutFile, routePrefix)] },
         });
 
         injectRoute({
           pattern: routePattern,
           entrypoint: routeEntryPoint,
-          prerender: options?.prerender || false,
+          prerender: options?.prerender,
         });
       },
     },
@@ -97,12 +98,12 @@ export function generateIsolationRoutes(
  * This gives users the flexibility to bring their own layout
  * file with styles and everything.
  */
-function createVirtualModule(layoutFile: string) {
-  const virtualModuleId = "virtual:launchpad-layout";
+function createVirtualModule(layoutFile: string, pathPrefix: string) {
+  const virtualModuleId = "virtual:launchpad-settings";
   const resolvedVirtualModuleId = "\0" + virtualModuleId;
 
   return {
-    name: "launchpad-layout",
+    name: "launchpad-settings",
     resolveId(id: string) {
       if (id === virtualModuleId) {
         return resolvedVirtualModuleId;
@@ -110,7 +111,11 @@ function createVirtualModule(layoutFile: string) {
     },
     load(id: string) {
       if (id === resolvedVirtualModuleId) {
-        return `import Layout from "${layoutFile}"; export default Layout;`;
+        return `
+          import Layout from "${layoutFile}";
+          export default Layout;
+          export const routePrefix = "${pathPrefix}";
+        `;
       }
     },
   };

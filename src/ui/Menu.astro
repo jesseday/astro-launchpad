@@ -1,5 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
+// @ts-ignore
+import { routePrefix } from 'virtual:launchpad-settings';
 
 const url = new URL(Astro.request.url);
 
@@ -23,7 +25,7 @@ const menu = (await getCollection('components'))
           <ul>
             {menu[category].map((component: string[]) => (
               <li>
-                <a href={`/isolation/${component.join('/')}`}>{component.slice(1).join('/')}</a>
+                <a href={`/${routePrefix}/${component.join('/')}`}>{component.slice(1).join('/')}</a>
               </li>
             ))}
           </ul>
