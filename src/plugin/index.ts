@@ -54,7 +54,7 @@ interface LaunchpadPluginOptions {
   layoutFile?: string;
 }
 
-export function generateIsolationRoutes(
+export default function launchpadPlugin(
   options: LaunchpadPluginOptions
 ): AstroIntegration {
   const isPreview = getIsPreview(options?.previewCallback);
