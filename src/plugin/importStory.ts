@@ -1,4 +1,6 @@
-import { AstroComponentFactory } from "astro/runtime/server/index.js";
+import type { StoryFile } from "./index";
+
+interface StoryFileImport extends StoryFile, ImportMeta {}
 
 /**
  * @file Import stories in a vite-friendly way.
@@ -15,9 +17,10 @@ import { AstroComponentFactory } from "astro/runtime/server/index.js";
  *
  * @see https://vitejs.dev/guide/features.html#glob-import
  */
-const modules = await import.meta.glob(["/src/**/*.story.astro"], {
-  import: "default",
-});
+const modules = await import.meta.glob([
+  "/src/**/*.story.astro",
+  "/src/**/*.stories.astro",
+]);
 
 /**
  * Import a story from a given path, relative to the
@@ -26,6 +29,6 @@ const modules = await import.meta.glob(["/src/**/*.story.astro"], {
  * @returns {AstroComponentFactory} An astro component to
  *   be rendered by the AstroContainer.
  */
-export function importStory(path: string): AstroComponentFactory {
-  return modules[path]() as unknown as AstroComponentFactory;
+export function importStory(path: string): StoryFileImport {
+  return modules[path]() as unknown as StoryFileImport;
 }

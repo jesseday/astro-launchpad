@@ -16,7 +16,8 @@ const { entry } = Astro.props;
 let AstroComponent: AstroComponentFactory | undefined;
 if (entry) {
   try {
-    AstroComponent = await importStory(entry.data.path) as AstroComponentFactory;
+    const story = await importStory(entry.data.path);
+    AstroComponent = story.default;
   } catch (error) {
     console.error(`Component story not found at path: ${entry?.data?.path || undefined}`);
   }

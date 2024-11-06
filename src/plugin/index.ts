@@ -2,11 +2,13 @@ import { loadEnv } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import type { AstroIntegration, HookParameters } from "astro";
+import { AstroComponentFactory } from "astro/runtime/server/index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-type ModuleInterface = {
+export type StoryFile = {
+  default: AstroComponentFactory;
   story: {
     name: string;
     description: string;
