@@ -6,9 +6,10 @@ import { routePrefix } from 'virtual:launchpad-settings';
 const url = new URL(Astro.request.url);
 const entries = await getCollection('components');
 
-const menu = entries
-  .map(entry => entry.data.id.split('/'))
-  .toSorted((a, b) => a.join().localeCompare(b.join()))
+let menu = entries
+  .map(entry => entry.data.id.split('/'));
+
+menu = menu.sort((a, b) => a.join().localeCompare(b.join()))
   .reduce((acc, name) => {
     if (!acc[name[0]]) {
       acc[name[0]] = [];
