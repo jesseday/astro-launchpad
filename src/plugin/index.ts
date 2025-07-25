@@ -48,7 +48,7 @@ interface LaunchpadPluginOptions {
   layoutFile?: string;
 }
 
-export function generateIsolationRoutes(
+export function Launchpad(
   options: LaunchpadPluginOptions
 ): AstroIntegration {
   const isPreview = getIsPreview(options?.previewCallback);
@@ -79,7 +79,7 @@ export function generateIsolationRoutes(
         injectRoute({
           pattern: routePattern,
           entrypoint: routeEntryPoint,
-          prerender: options?.prerender,
+          prerender: options?.prerender || false,
         });
       },
     },
