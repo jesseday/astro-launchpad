@@ -6,31 +6,6 @@ import type { AstroIntegration, HookParameters } from "astro";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function storyLoader() {
-  return {
-    loader: async () => {
-      // globs from the root of the project
-      const stories = await import.meta.glob(["/src/**/*.story.astro"]);
-      const entries = [];
-      for (const path in stories) {
-        const name = path.split("/").pop()?.replace(/\.story\.astro$/, "");
-        if (!name) {
-          continue;
-        }
-
-        const entry = {
-          id: name?.toLowerCase(),
-          name,
-          path,
-        };
-        entries.push(entry);
-      }
-
-      return entries;
-    },
-  };
-}
-
 /**
  * Astro plugin that generates a route for isolation mode.
  *

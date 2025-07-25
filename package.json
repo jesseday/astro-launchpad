@@ -10,6 +10,7 @@
   "exports": {
     ".": "./src/plugin/index.ts",
     "./plugin": "./src/plugin/index.ts",
+    "./loader": "./src/plugin/loader.ts",
     "./ui/*": "./src/ui/*.astro"
   },
   "scripts": {
