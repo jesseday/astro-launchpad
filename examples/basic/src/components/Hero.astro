@@ -1,0 +1,48 @@
+<div class="hero">
+  <div class="content">
+    <slot name="content" />
+  </div>
+  <div class="image">
+    <slot name="image" />
+  </div>
+</div>
+
+<style>
+  .hero {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 4rem 2rem;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .hero .image {
+    width: 50%;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .hero .image :global(img) {
+    max-width: 850px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .hero .content {
+    padding: 2rem;
+    width: 50%;
+    max-width: 450px;
+  }
+
+  .hero :global(h1) {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .hero :global(p) {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+  }
+</style>

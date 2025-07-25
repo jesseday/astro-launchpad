@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import HeroComponent from './Hero.astro';
+import HeroImage from '../assets/hero-image.webp';
+
+export const story = {
+  name: 'Hero',
+  description: 'A simple hero component with content and image slots.',
+}
+---
+
+<HeroComponent>
+  <h1 slot="content">Welcome to Astro Launchpad</h1>
+  <p slot="content">This is a basic example of using the Hero component.</p>
+  <Image slot="image" priority src={HeroImage} alt="Hero Image" height="600" width="800"/>
+</HeroComponent>
